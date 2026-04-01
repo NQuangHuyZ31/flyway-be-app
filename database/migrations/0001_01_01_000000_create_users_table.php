@@ -16,8 +16,16 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('birthday')->nullable()->comment('Ngày sinh');
+            $table->enum('department', ['HR', 'Engineering', 'Sales', 'Marketing', 'Finance', 'Inventory'])->nullable()->comment('Phòng ban');
+            $table->text('avatar')->nullable()->comment('ảnh đại diện');
+            $table->string('phone')->nullable()->comment('Số điện thoại');
+            $table->string('province')->nullable()->comment('Tỉnh/Thành phố');
+            $table->string('ward')->nullable()->comment('Phường/Xã');
+            $table->string('address')->nullable()->comment('Địa chỉ');
+            $table->boolean('status')->default(0)->comment('Trạng thái tài khoản');
             $table->string('password');
-            $table->rememberToken();
+            $table->rememberToken();    
             $table->timestamps();
         });
 
