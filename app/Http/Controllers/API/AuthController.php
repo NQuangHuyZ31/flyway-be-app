@@ -18,13 +18,13 @@ class AuthController extends Controller
         if (!$token = $authInplement->login($request->only('email', 'password'))) {
             return response()->json([
                 'success' => false,
-                'error' => 'Invalid email or password',
+                'message' => 'Email hoặc mật khẩu không đúng',
             ], 401);
         }
 
         return response()->json([
             'success' => true,
-            'message' => 'Login successfully',
+            'message' => 'Đăng nhập thành công',
             'token' => $token,
         ]);
     }
@@ -35,7 +35,7 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Logout successfully',
+            'message' => 'Đăng xuất thành công',
         ]);
     }
 
@@ -44,7 +44,7 @@ class AuthController extends Controller
         $token = JWTAuth::getToken();
         return response()->json([
             'success' => true,
-            'message' => 'Token refreshed successfully',
+            'message' => 'Làm mới token thành công',
             'token' => JWTAuth::refresh($token),
         ]);
     }

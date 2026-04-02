@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('supplier_id')->nullable()->comment('Khóa ngoại: Nhà cung cấp (nullable nếu nhập từ nguồn khác)');
             $table->date('import_date')->index()->comment('Ngày nhập lô hàng');
             $table->integer('quantity_imported')->default(0)->comment('Số lượng nhập ban đầu');
+            $table->enum('type', ['production', 'purchase'])->default('purchase');
             $table->integer('quantity_available')->default(0)->comment('Số lượng còn lại định kỳ');
             $table->decimal('unit_cost', 12, 4)->comment('Giá vốn/đơn vị (cho hóa toán COGS)');
             $table->decimal('unit_price', 12, 4)->comment('Giá bán kỳ vọng/đơn vị');
