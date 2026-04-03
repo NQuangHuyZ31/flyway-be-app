@@ -19,10 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id')->nullable()->comment('Khóa ngoại đến categories');
             $table->unsignedBigInteger('unit_id')->nullable()->comment('Khóa ngoại đến units_of_measure');
             $table->text('description')->nullable()->comment('Mô tả chi tiết');
-            $table->enum('type', ['production', 'purchase'])->default('purchase');
             $table->decimal('price', 12, 2)->default(0)->comment('Giá bán');
             $table->decimal('cost', 12, 2)->default(0)->comment('Giá vốn');
-            $table->integer('minimux_inventory')->default(10)->comment('Mức tối thiểu đồng');
+            $table->integer('minimum_inventory')->default(10)->comment('Mức tối thiểu đồng');
             $table->integer('total_quantity')->default(50)->comment('Số lượng đồng');
             $table->string('product_image_url', 255)->nullable()->comment('Hình ảnh sản phẩm');
             $table->boolean('is_active')->default(true)->comment('Sản phẩm có hoạt động');

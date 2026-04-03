@@ -32,14 +32,14 @@ class LoginRequest extends FormRequest
     
     public function messages(): array {
             return [
-                'email.required' => 'Email is required',
-                'email.email' => 'Email must be a valid email address',
-                'email.regex' => 'Email must be a valid Gmail address',
-                'password.required' => 'Password is required',
-                'password.string' => 'Password must be a string',
-                'password.min' => 'Password must be at least 6 characters',
-                'type.required' => 'Type is required',
-                'type.in' => 'Type must be either email, google, or facebook',
+                'email.required' => 'Email không được để trống',
+                'email.email' => 'Email phải là một địa chỉ email hợp lệ',
+                'email.regex' => 'Email phải là một địa chỉ Gmail hợp lệ',
+                'password.required' => 'Mật khẩu không được để trống',
+                'password.string' => 'Mật khẩu phải là một chuỗi',
+                'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
+                'type.required' => 'Loại không được để trống',
+                'type.in' => 'Loại phải là email, google, hoặc facebook',
             ];
         }
 }
