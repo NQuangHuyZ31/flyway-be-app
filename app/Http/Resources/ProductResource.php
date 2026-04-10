@@ -25,7 +25,9 @@ class ProductResource extends JsonResource
             'cost' => $this->cost,
             'minimum_inventory' => $this->minimum_inventory,
             'total_quantity' => $this->total_quantity,
-            'is_active' => $this->is_active == 1 ? __('product.active') : __('product.is_inactive'),
+            'description' => $this->description,
+            'product_image_url' => $this->product_image_url,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at->format('Y-m-d'),
         ];
     }
