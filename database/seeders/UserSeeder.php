@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         $data = [
             [
                 'name' => 'admin',
-                'email' => 'admin@example.com',
+                'email' => 'admin@gmail.com',
                 'password' => Hash::make('123456'),
                 'birthday' => '1990-01-01',
                 'department' => 'HR',
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'manager',
-                'email' => 'manager@example.com',
+                'email' => 'manager@gmail.com',
                 'password' => Hash::make('123456'),
                 'birthday' => '1990-01-01',
                 'department' => 'Engineering',
