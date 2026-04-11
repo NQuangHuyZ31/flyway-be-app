@@ -8,6 +8,7 @@ use App\Http\Controllers\API\InventoryController;
 use App\Http\Controllers\API\WarehouseController;
 use App\Http\Controllers\API\StockInputVoucherController;
 use App\Http\Controllers\API\StockOutputVoucherController;
+use App\Http\Controllers\API\UnitsOfMeasureController;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes
@@ -23,6 +24,9 @@ Route::middleware('auth:api')->group(function () {
 
 	// Category Routes
 	Route::apiResource('categories', CategoryController::class);
+
+	// Units of Measure Routes
+	Route::apiResource('units-of-measure', UnitsOfMeasureController::class);
 
 	// Product Routes
 	Route::apiResource('products', ProductController::class);
