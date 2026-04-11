@@ -22,23 +22,195 @@ class StockOutputVoucherController extends Controller
     {
         try {
             $vouchers = $this->service->getAllVouchersWithPagination($request);
-            
-            return response()->json([
-                'success' => true,
+            $data = [
                 'data' => StockOutputVoucherResource::collection($vouchers),
                 'pagination' => [
                     'total' => $vouchers->total(),
                     'per_page' => $vouchers->perPage(),
                     'current_page' => $vouchers->currentPage(),
                 ]
-            ]);
+            ];
+            return $this->successResponse($data);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Lỗi khi lấy dữ liệu phiếu xuất: ' . $e->getMessage(),
-            ], 400);
+            return $this->errorResponse('Lỗi khi lấy dữ liệu phiếu xuất: ' . $e->getMessage(), 400);
         }
     }
+
+    /**
+     * Get vouchers by warehouse
+     */
+    public function byWarehouse(Request $request, $warehouseId)
+    {
+        try {
+            $vouchers = $this->service->getVouchersByWarehouse($warehouseId, $request);
+            $data = [
+                'data' => StockOutputVoucherResource::collection($vouchers),
+                'pagination' => [
+                    'total' => $vouchers->total(),
+                    'per_page' => $vouchers->perPage(),
+                    'current_page' => $vouchers->currentPage(),
+                ]
+            ];
+            return $this->successResponse($data);
+        } catch (\Exception $e) {
+            return $this->errorResponse('Lỗi khi lấy dữ liệu phiếu xuất: ' . $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Get vouchers by status
+     */
+    public function byStatus(Request $request, $statusId)
+    {
+        try {
+            $vouchers = $this->service->getVouchersByStatus($statusId, $request);
+            $data = [
+                'data' => StockOutputVoucherResource::collection($vouchers),
+                'pagination' => [
+                    'total' => $vouchers->total(),
+                    'per_page' => $vouchers->perPage(),
+                    'current_page' => $vouchers->currentPage(),
+                ]
+            ];
+            return $this->successResponse($data);
+        } catch (\Exception $e) {
+            return $this->errorResponse('Lỗi khi lấy dữ liệu phiếu xuất: ' . $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Store a newly created stock output voucher.
+     */
+    public function store(StoreStockOutputVoucherRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $data['created_by'] = auth()->id();
+            $voucher = $this->service->createVoucher($data);
+            return $this->successResponse(new StockOutputVoucherResource($voucher), 'Tạo phiếu xuất thành công', 201);
+        } catch (\Exception $e) {
+            return $this->errorResponse('Tạo phiếu xuất thất bại: ' . $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Display the specified stock output voucher.
+     */
+    public function show($id)
+    {
+        try {
+            $voucher = $this->service->getVoucherById($id);
+            if (!$voucher) {
+                return $this->errorResponse('Phiếu xuất không tồn tại', 404);
+            }
+            return $this->successResponse(new StockOutputVoucherResource($voucher));
+        } catch (\Exception $e) {
+            return $this->errorResponse('Lỗi khi lấy dữ liệu phiếu xuất: ' . $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Update the specified stock output voucher.
+     */
+    public function update(UpdateStockOutputVoucherRequest $request, $id)
+    {
+        try {
+            $voucher = $this->service->getVoucherById($id);
+            if (!$voucher) {
+                return $this->errorResponse('Phiếu xuất không tồn tại', 404);
+            }
+            $updatedVoucher = $this->service->updateVoucher($id, $request->validated());
+            return $this->successResponse(new StockOutputVoucherResource($updatedVoucher), 'Cập nhật phiếu xuất thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse('Cập nhật phiếu xuất thất bại: ' . $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Submit a stock output voucher for approval.
+     */
+    public function submit(Request $request, $id)
+    {
+        try {
+            $voucher = $this->service->submitVoucher($id);
+            return $this->successResponse(new StockOutputVoucherResource($voucher), 'Gửi phiếu xuất thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Approve a stock output voucher.
+     */
+    public function approve(Request $request, $id)
+    {
+        try {
+            $data = ['approved_by' => auth()->id()];
+            $voucher = $this->service->approveVoucher($id, $data);
+            return $this->successResponse(new StockOutputVoucherResource($voucher), 'Duyệt phiếu xuất thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Complete a stock output voucher.
+     */
+    public function complete(Request $request, $id)
+    {
+        try {
+            $voucher = $this->service->completeVoucher($id);
+            return $this->successResponse(new StockOutputVoucherResource($voucher), 'Hoàn thành phiếu xuất thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Cancel an item in a stock output voucher.
+     */
+    public function cancelItem(Request $request, $id, $itemId)
+    {
+        try {
+            $reason = $request->input('reason');
+            $voucher = $this->service->cancelVoucherItem($id, $itemId, $reason);
+            return $this->successResponse(new StockOutputVoucherResource($voucher), 'Hủy mặt hàng thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Reject a stock output voucher.
+     */
+    public function reject(Request $request, $id)
+    {
+        try {
+            $reason = $request->input('reason');
+            $voucher = $this->service->rejectVoucher($id, $reason);
+            return $this->successResponse(new StockOutputVoucherResource($voucher), 'Từ chối phiếu xuất thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Remove the specified stock output voucher.
+     */
+    public function destroy($id)
+    {
+        try {
+            $voucher = $this->service->getVoucherById($id);
+            if (!$voucher) {
+                return $this->errorResponse('Phiếu xuất không tồn tại', 404);
+            }
+            $this->service->deleteVoucher($id);
+            return $this->successResponse(null, 'Xóa phiếu xuất thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse('Xóa phiếu xuất thất bại: ' . $e->getMessage(), 400);
+        }
+    }
+}
 
     /**
      * Get vouchers by warehouse

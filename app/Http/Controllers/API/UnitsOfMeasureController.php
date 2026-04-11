@@ -14,8 +14,7 @@ class UnitsOfMeasureController extends Controller
      */
     public function index()
     {
-        //
-        return UnitsOfMeasureResource::collection(UnitsOfMeasure::where('is_active', true)->get());
+        return $this->successResponse(UnitsOfMeasureResource::collection(UnitsOfMeasure::where('is_active', true)->get()));
     }
 
     /**

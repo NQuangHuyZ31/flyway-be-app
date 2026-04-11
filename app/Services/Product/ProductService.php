@@ -3,7 +3,7 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
-use App\Repositories\Products\ProductRepositoryInterface;
+use App\Repositories\Product\ProductRepositoryInterface;
 
 class ProductService {
 
@@ -13,8 +13,9 @@ class ProductService {
 
 	public function getAllProductWithPagination($request) {
 		$perPage = $request->input('per_page');
+		$filters = $request->input('filter');
 
-		return $this->productRepository->getAllWithPagination($perPage);
+		return $this->productRepository->getAllWithFilterPaginate($perPage, $filters);
 	}
 
 	public function getProductById($id) {

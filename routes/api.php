@@ -5,6 +5,7 @@ use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\InventoryController;
+use App\Http\Controllers\API\ProductBatcheController;
 use App\Http\Controllers\API\WarehouseController;
 use App\Http\Controllers\API\StockInputVoucherController;
 use App\Http\Controllers\API\StockOutputVoucherController;
@@ -30,6 +31,9 @@ Route::middleware('auth:api')->group(function () {
 
 	// Product Routes
 	Route::apiResource('products', ProductController::class);
+	Route::prefix('products') ->group(function () {
+		Route::get('/{id}/batches', [ProductBatcheController::class, 'index'])->name('products.batches');
+	});
 
 	// Inventory Routes
 	Route::apiResource('inventory', InventoryController::class);

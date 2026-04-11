@@ -22,16 +22,16 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $products = $this->productService->getAllProductWithPagination($request);
-        return response()->json([
-            'success' => true,
+        $data = [
             'header_filter' => Product::getLangKey(),
             'data' => ProductResource::collection($products),
             'pagination' => [
                 'total' => $products->total(),
                 'per_page' => $products->perPage(),
                 'current_page' => $products->currentPage(),
-            ]
-        ]);
+            ],
+        ];
+        return $this->successResponse($data);
     }
 
     /**
@@ -41,16 +41,9 @@ class ProductController extends Controller
     {
         try {
             $product = $this->productService->createProduct($request->validated());
-            return response()->json([
-                'success' => true,
-                'data' => new ProductResource($product),
-                'message' => 'Tạo sản phẩm thành công',
-            ], 201);
+            return $this->createdResponse(new ProductResource($product), 'Tạo sản phẩm thành công');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tạo sản phẩm thất bại: ' . $e->getMessage(),
-            ], 400);
+            return $this->serverErrorResponse('Tạo sản phẩm thất bại: ' . $e->getMessage(), $e);
         }
     }
 
@@ -62,16 +55,10 @@ class ProductController extends Controller
         $product = $this->productService->getProductById($id);
         
         if (!$product) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sản phẩm không tồn tại',
-            ], 404);
+            return $this->notFoundResponse('Sản phẩm không tồn tại');
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => new ProductResource($product),
-        ]);
+        return $this->successResponse(new ProductResource($product));
     }
 
     /**
@@ -83,25 +70,15 @@ class ProductController extends Controller
             $product = $this->productService->getProductById($id);
             
             if (!$product) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Sản phẩm không tồn tại',
-                ], 404);
+                return $this->notFoundResponse('Sản phẩm không tồn tại');
             }
 
             $this->productService->updateProduct($id, $request->validated());
             $product = $this->productService->getProductById($id);
 
-            return response()->json([
-                'success' => true,
-                'data' => new ProductResource($product),
-                'message' => 'Cập nhật sản phẩm thành công',
-            ]);
+            return $this->successResponse(new ProductResource($product), 'Cập nhật sản phẩm thành công');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cập nhật sản phẩm thất bại: ' . $e->getMessage(),
-            ], 400);
+            return $this->serverErrorResponse('Cập nhật sản phẩm thất bại: ' . $e->getMessage(), $e);
         }
     }
 
@@ -112,31 +89,16 @@ class ProductController extends Controller
     {
         try {
             $product = $this->productService->getProductById($id);
-            
+
             if (!$product) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Sản phẩm không tồn tại',
-                ], 404);
+                return $this->notFoundResponse('Sản phẩm không tồn tại');
             }
 
-            $deleted = $this->productService->deleteProduct($id);
-            if (!$deleted) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Xóa sản phẩm thất bại',
-                ], 400);
-            }
+            $this->productService->deleteProduct($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Xóa sản phẩm thành công',
-            ]);
+            return $this->noContentResponse('Xóa sản phẩm thành công');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Xóa sản phẩm thất bại: ' . $e->getMessage(),
-            ], 400);
+            return $this->serverErrorResponse('Xóa sản phẩm thất bại: ' . $e->getMessage(), $e);
         }
     }
 }

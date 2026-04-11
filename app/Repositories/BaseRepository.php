@@ -2,7 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Traits\FilterDataTrait;
+
 abstract class BaseRepository implements RepositoryInterface {
+
+	use FilterDataTrait;
 
 	protected $model;
 
