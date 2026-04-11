@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use function PHPSTORM_META\map;
-
 #[Fillable(['id','product_name', 'product_code', 'sku', 'category_id', 'unit_id', 'description', 'price', 'cost', 'minimum_inventory', 'total_quantity', 'product_image_url', 'is_active', 'created_at', 'updated_at'])]
 class Product extends Model
 {
@@ -39,6 +37,11 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(UnitsOfMeasure::class, 'unit_id', 'id');
     }
 
 }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('units_of_measure', function (Blueprint $table) {
+        Schema::create('units_of_measures', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique()->comment('Đơn vị (Cái, Hộp, Mét, Kg...)');
             $table->string('code', 20)->unique()->comment('Mã đơn vị (PCS, BOX, M, KG...)');
