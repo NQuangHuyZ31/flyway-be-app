@@ -16,44 +16,27 @@ class AuthController extends Controller
         $authInplement = AuthFactory::authImplement($request->input('type'));
 
         if (!$token = $authInplement->login($request->only('email', 'password'))) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Email hoặc mật khẩu không đúng',
-            ], 401);
+            return $this->errorResponse('Email hoặc mật khẩu không đúng', 401);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Đăng nhập thành công',
-            'token' => $token,
-        ]);
+        return $this->successResponse(['token' => $token], 'Đăng nhập thành công');
     }
 
     // logout
     public function logout() {
         auth()->logout();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Đăng xuất thành công',
-        ]);
+        return $this->successResponse(null, 'Đăng xuất thành công');
     }
 
     // refresh token
     public function refresh() {
         $token = JWTAuth::getToken();
-        return response()->json([
-            'success' => true,
-            'message' => 'Làm mới token thành công',
-            'token' => JWTAuth::refresh($token),
-        ]);
+        return $this->successResponse(['token' => JWTAuth::refresh($token)], 'Làm mới token thành công');
     }
 
     // get current user
     public function me() {
-        return response()->json([
-            'success' => true,
-            'data' => new UserResource(auth()->user()),
-        ]);
+        return $this->successResponse(new UserResource(auth()->user()));
     }
 }

@@ -16,22 +16,55 @@ class Product extends Model
     use SoftDeletes, HasFactory, LangMapping;
 
     const FILTERS = [
-        'product_name',
-        'product_code',
-        'sku',
-        'category_id',
-        'unit_id',
-        'price',
-        'cost',
-        'minimum_inventory',
-        'total_quantity',
-        'is_active',
-        'created_at',
-    ];
+        'product_name' => [
+            'type' => 'string',
+            'column' => 'product_name',
+        ],
+        'product_code' => [
+            'type' => 'string',
+            'column' => 'product_code',
+        ],
+        'sku' => [
+            'type' => 'string',
+            'column' => 'sku',
+        ],
+        'category_id' => [
+            'type' => 'number',
+            'column' => 'category_id',
+        ],
+        'unit_id' => [
+            'type' => 'number',
+            'column' => 'unit_id',
+        ],
+        'price' => [
+            'type' => 'number',
+            'column' => 'price',
+        ],
+        'cost' => [
+            'type' => 'number',
+            'column' => 'cost',
+        ],
+        'minimum_inventory' => [
+            'type' => 'number',
+            'column' => 'minimum_inventory',
+        ],
+        'total_quantity' => [
+            'type' => 'number',
+            'column' => 'total_quantity',
+        ],
+        'is_active' => [
+            'type' => 'number',
+            'column' => 'is_active',
+        ],
+        'created_at' => [
+            'type' => 'date',
+            'column' => 'created_at',
+        ],
+];
 
     public static function getLangKey()
     {
-        return self::mapLang(self::FILTERS);
+        return self::mapLang(self::FILTERS, 'product');
     }
 
     public function category(): BelongsTo

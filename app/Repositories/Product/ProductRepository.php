@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Products;
+namespace App\Repositories\Product;
 
 use App\Models\Product;
 use App\Repositories\BaseRepository;
@@ -12,9 +12,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 		return Product::class;
 	}
 
-	public function getAllWithPagination($perPage)
+	public function getAllWithFilterPaginate($perPage, $filters)
 	{
-		return Product::paginate($perPage);
+		$query = $this->model->newQuery();
+
+		if (!empty($filters)) {
+			$query = $this->scopeFilter($query, $filters, $this->model);
+		}
+
+		return $query->paginate($perPage);
 	}
 
 	public function getAllTotal()

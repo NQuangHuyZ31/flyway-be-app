@@ -1,9 +1,9 @@
 <?php
-namespace App\Repositories\Products;
+namespace App\Repositories\Product;
 
 use App\Repositories\RepositoryInterface;
 
 interface ProductRepositoryInterface extends RepositoryInterface {
-	public function getAllWithPagination($perPage);
+	public function getAllWithFilterPaginate($perPage, $filters);
 	public function getAllTotal();
 }

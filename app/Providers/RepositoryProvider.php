@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Repositories\Products\ProductRepository;
-use App\Repositories\Products\ProductRepositoryInterface;
+use App\Repositories\Product\ProductRepository;
+use App\Repositories\Product\ProductRepositoryInterface;
+use App\Repositories\ProductBatch\ProductBatcheRepository;
+use App\Repositories\ProductBatch\ProductBatcheRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryProvider extends ServiceProvider
@@ -15,6 +17,7 @@ class RepositoryProvider extends ServiceProvider
     {
         //
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(ProductBatcheRepositoryInterface::class, ProductBatcheRepository::class);
     }
 
     /**

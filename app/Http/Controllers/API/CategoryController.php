@@ -14,8 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-        return CategoryResource::collection(Category::all());
+        return $this->successResponse(CategoryResource::collection(Category::all()));
     }
 
     /**
