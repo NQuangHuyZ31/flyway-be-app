@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255)->unique()->comment('Tên danh mục');
-            $table->string('slug', 255)->unique()->comment('URL slug');
+            $table->string('name', 255)->comment('Tên danh mục');
+            $table->string('slug', 255)->comment('URL slug');
             $table->text('description')->nullable()->comment('Mô tả danh mục');
             $table->string('icon', 100)->nullable()->comment('Icon danh mục');
             $table->string('thumbnail_url', 255)->nullable()->comment('Hình ảnh thumbnail');

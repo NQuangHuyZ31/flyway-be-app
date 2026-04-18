@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
-            UnitsOfMeasureSeeder::class,
         ]);
 
         Product::factory(50)->create();

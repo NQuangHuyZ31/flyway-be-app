@@ -9,7 +9,8 @@ use App\Http\Controllers\API\ProductBatcheController;
 use App\Http\Controllers\API\WarehouseController;
 use App\Http\Controllers\API\StockInputVoucherController;
 use App\Http\Controllers\API\StockOutputVoucherController;
-use App\Http\Controllers\API\UnitsOfMeasureController;
+use App\Http\Controllers\API\StorageImageController;
+use App\Http\Controllers\API\UnitController;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes
@@ -27,12 +28,13 @@ Route::middleware('auth:api')->group(function () {
 	Route::apiResource('categories', CategoryController::class);
 
 	// Units of Measure Routes
-	Route::apiResource('units-of-measure', UnitsOfMeasureController::class);
+	Route::apiResource('units', UnitController::class);
 
 	// Product Routes
 	Route::apiResource('products', ProductController::class);
 	Route::prefix('products') ->group(function () {
 		Route::get('/{id}/batches', [ProductBatcheController::class, 'index'])->name('products.batches');
+		Route::post('/check-duplicate', [ProductController::class, 'checkDuplicate'])->name('products.check_duplicate');
 	});
 
 	// Inventory Routes
@@ -64,6 +66,9 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/stock-output-vouchers/{id}/complete', [StockOutputVoucherController::class, 'complete'])->name('stock_output_vouchers.complete');
 	Route::post('/stock-output-vouchers/{id}/reject', [StockOutputVoucherController::class, 'reject'])->name('stock_output_vouchers.reject');
 	Route::post('/stock-output-vouchers/{voucherId}/items/{itemId}/cancel', [StockOutputVoucherController::class, 'cancelItem'])->name('stock_output_vouchers.cancel_item');
+
+	// Route for get presigned url to upload image to s3
+	Route::post('/storage/presigned-url', [StorageImageController::class, 'getPresignedUrl'])->name('storage.presigned_url');
 });
 
 

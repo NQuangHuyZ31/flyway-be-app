@@ -38,69 +38,6 @@ class InventoryController extends Controller
     }
 
     /**
-     * Get inventory by warehouse
-     */
-    public function byWarehouse(Request $request, $warehouseId)
-    {
-        try {
-            $inventory = $this->inventoryService->getInventoryByWarehouse($warehouseId, $request);
-            $data = [
-                'data' => InventoryResource::collection($inventory),
-                'pagination' => [
-                    'total' => $inventory->total(),
-                    'per_page' => $inventory->perPage(),
-                    'current_page' => $inventory->currentPage(),
-                ]
-            ];
-            return $this->successResponse($data);
-        } catch (\Exception $e) {
-            return $this->errorResponse('Lỗi khi lấy dữ liệu kho hàng: ' . $e->getMessage(), 400);
-        }
-    }
-
-    /**
-     * Get inventory by product
-     */
-    public function byProduct(Request $request, $productId)
-    {
-        try {
-            $inventory = $this->inventoryService->getInventoryByProduct($productId, $request);
-            $data = [
-                'data' => InventoryResource::collection($inventory),
-                'pagination' => [
-                    'total' => $inventory->total(),
-                    'per_page' => $inventory->perPage(),
-                    'current_page' => $inventory->currentPage(),
-                ]
-            ];
-            return $this->successResponse($data);
-        } catch (\Exception $e) {
-            return $this->errorResponse('Lỗi khi lấy dữ liệu kho hàng: ' . $e->getMessage(), 400);
-        }
-    }
-
-    /**
-     * Get low stock items
-     */
-    public function lowStock(Request $request)
-    {
-        try {
-            $inventory = $this->inventoryService->getLowStockItems($request);
-            $data = [
-                'data' => InventoryResource::collection($inventory),
-                'pagination' => [
-                    'total' => $inventory->total(),
-                    'per_page' => $inventory->perPage(),
-                    'current_page' => $inventory->currentPage(),
-                ]
-            ];
-            return $this->successResponse($data);
-        } catch (\Exception $e) {
-            return $this->errorResponse('Lỗi khi lấy dữ liệu kho hàng: ' . $e->getMessage(), 400);
-        }
-    }
-
-    /**
      * Store a newly created inventory record.
      */
     public function store(StoreInventoryRequest $request)
@@ -147,23 +84,6 @@ class InventoryController extends Controller
     }
 
     /**
-     * Adjust inventory quantities.
-     */
-    public function adjust(AdjustInventoryRequest $request, $id)
-    {
-        try {
-            $inventory = $this->inventoryService->getInventoryById($id);
-            if (!$inventory) {
-                return $this->errorResponse('Tồn kho không tồn tại', 404);
-            }
-            $this->inventoryService->adjustInventory($id, $request->validated());
-            return $this->successResponse(null, 'Điều chỉnh tồn kho thành công');
-        } catch (\Exception $e) {
-            return $this->errorResponse('Điều chỉnh tồn kho thất bại: ' . $e->getMessage(), 400);
-        }
-    }
-
-    /**
      * Remove the specified inventory record.
      */
     public function destroy($id)
@@ -179,7 +99,6 @@ class InventoryController extends Controller
             return $this->errorResponse('Xóa tồn kho thất bại: ' . $e->getMessage(), 400);
         }
     }
-}
 
     /**
      * Get inventory by warehouse
@@ -257,88 +176,6 @@ class InventoryController extends Controller
     }
 
     /**
-     * Store a newly created inventory record.
-     */
-    public function store(StoreInventoryRequest $request)
-    {
-        try {
-            $data = $request->validated();
-            $data['quantity_available'] = max(0, $data['quantity_on_hand'] - $data['quantity_reserved']);
-            
-            $inventory = $this->inventoryService->createInventory($data);
-            
-            return response()->json([
-                'success' => true,
-                'data' => new InventoryResource($inventory),
-                'message' => 'Tạo bản ghi kho hàng thành công',
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tạo bản ghi kho hàng thất bại: ' . $e->getMessage(),
-            ], 400);
-        }
-    }
-
-    /**
-     * Display the specified inventory record.
-     */
-    public function show($id)
-    {
-        try {
-            $inventory = $this->inventoryService->getInventoryById($id);
-            
-            if (!$inventory) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Bản ghi kho hàng không tồn tại',
-                ], 404);
-            }
-
-            return response()->json([
-                'success' => true,
-                'data' => new InventoryResource($inventory),
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Lỗi khi lấy dữ liệu kho hàng: ' . $e->getMessage(),
-            ], 400);
-        }
-    }
-
-    /**
-     * Update the specified inventory record.
-     */
-    public function update(UpdateInventoryRequest $request, $id)
-    {
-        try {
-            $inventory = $this->inventoryService->getInventoryById($id);
-            
-            if (!$inventory) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Bản ghi kho hàng không tồn tại',
-                ], 404);
-            }
-
-            $this->inventoryService->updateInventory($id, $request->validated());
-            $inventory = $this->inventoryService->getInventoryById($id);
-
-            return response()->json([
-                'success' => true,
-                'data' => new InventoryResource($inventory),
-                'message' => 'Cập nhật bản ghi kho hàng thành công',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cập nhật bản ghi kho hàng thất bại: ' . $e->getMessage(),
-            ], 400);
-        }
-    }
-
-    /**
      * Adjust inventory quantities
      */
     public function adjust($id, AdjustInventoryRequest $request)
@@ -365,42 +202,6 @@ class InventoryController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Điều chỉnh kho hàng thất bại: ' . $e->getMessage(),
-            ], 400);
-        }
-    }
-
-    /**
-     * Delete the specified inventory record.
-     */
-    public function destroy($id)
-    {
-        try {
-            $inventory = $this->inventoryService->getInventoryById($id);
-            
-            if (!$inventory) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Bản ghi kho hàng không tồn tại',
-                ], 404);
-            }
-
-            $deleted = $this->inventoryService->deleteInventory($id);
-            
-            if (!$deleted) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Xóa bản ghi kho hàng thất bại',
-                ], 400);
-            }
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Xóa bản ghi kho hàng thành công',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Xóa bản ghi kho hàng thất bại: ' . $e->getMessage(),
             ], 400);
         }
     }

@@ -122,4 +122,7 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    // Other configurations...
+    'default_storage' => env('DEFAULT_STORAGE', 's3'),
 ];

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UnitsOfMeasureResource extends JsonResource
+class UnitResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,9 @@ class UnitsOfMeasureResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
+            'abbreviation' => $this->abbreviation,
             'is_active' => $this->is_active,
+            'created_at' => $this->created_at->format('Y-m-d'),
         ];
     }
 }

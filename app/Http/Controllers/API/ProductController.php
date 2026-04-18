@@ -101,4 +101,17 @@ class ProductController extends Controller
             return $this->serverErrorResponse('Xóa sản phẩm thất bại: ' . $e->getMessage(), $e);
         }
     }
+
+    // Check duplicate product code, sku
+    public function checkDuplicate(Request $request)
+    {
+        $field = $request->input('field');
+        $value = $request->input('value');
+
+        if (!$this->productService->checkDuplicate($field, $value)) {
+            return $this->successResponse(['is_duplicate' => false]);
+        }
+
+        return $this->successResponse(['is_duplicate' => true],  'Giá trị ' . $value . ' đã tồn tại');
+    }
 }
