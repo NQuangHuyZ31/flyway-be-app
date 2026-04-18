@@ -74,7 +74,7 @@ class Product extends Model
 
     public function unit(): BelongsTo
     {
-        return $this->belongsTo(UnitsOfMeasure::class, 'unit_id', 'id');
+        return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
 
 }

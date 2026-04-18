@@ -12,8 +12,8 @@ class ProductService {
 	}
 
 	public function getAllProductWithPagination($request) {
-		$perPage = $request->input('per_page');
-		$filters = $request->input('filter');
+		$perPage = $request->input('per_page' ?? 20);
+		$filters = $request->input('filters' ?? []);
 
 		return $this->productRepository->getAllWithFilterPaginate($perPage, $filters);
 	}
@@ -40,5 +40,10 @@ class ProductService {
 		}
 
 		return true;
+	}
+
+	// Check duplicate product code, sku
+	public function checkDuplicate($field, $value) {
+		return $this->productRepository->checkDuplicate($field, $value);
 	}
 }

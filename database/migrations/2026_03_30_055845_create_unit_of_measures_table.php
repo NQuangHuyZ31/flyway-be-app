@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('units_of_measures', function (Blueprint $table) {
+        Schema::create('units', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100)->unique()->comment('Đơn vị (Cái, Hộp, Mét, Kg...)');
-            $table->string('code', 20)->unique()->comment('Mã đơn vị (PCS, BOX, M, KG...)');
+            $table->string('name', 100)->comment('Đơn vị (Cái, Hộp, Mét, Kg...)');
+            $table->string('code', 20)->comment('Mã đơn vị (PCS, BOX, M, KG...)');
             $table->string('abbreviation', 10)->nullable()->comment('Viết tắt');
             $table->text('description')->nullable()->comment('Mô tả');
             $table->decimal('conversion_factor', 10, 4)->nullable()->comment('Hệ số chuyển đổi');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('units_of_measure');
+        Schema::dropIfExists('units');
     }
 };

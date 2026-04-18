@@ -27,4 +27,9 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 	{
 		return count($this->all());
 	}
+
+	public function checkDuplicate($field, $value)
+	{
+		return $this->model->where($field, $value)->exists();
+	}
 }
