@@ -24,7 +24,7 @@ class ImageValidateRequest extends FormRequest
     {
         return [
             //
-            'product_image_url' => 'required|file|mimes:jpg,jpeg,png|max:2048', // max 2MB
+            'file' => 'required|file|mimes:jpg,jpeg,png|max:2048', // max 2MB
             'folder' => 'required|string|max:255',
         ];
     }
@@ -32,10 +32,10 @@ class ImageValidateRequest extends FormRequest
     public function messages()
     {
         return [
-            'product_image_url.required' => 'Hình ảnh là bắt buộc',
-            'product_image_url.file' => 'Hinh ảnh phải là một file',
-            'product_image_url.mimes' => 'Hình ảnh phải là một tệp hình ảnh (jpg, jpeg, png)',
-            'product_image_url.max' => 'Kích thước tệp phải nhỏ hơn 2MB',
+            'file.required' => 'Hình ảnh là bắt buộc',
+            'file.file' => 'Hinh ảnh phải là một file',
+            'file.mimes' => 'Hình ảnh phải là một tệp hình ảnh (jpg, jpeg, png)',
+            'file.max' => 'Kích thước tệp phải nhỏ hơn 2MB',
         ];
     }
 }

@@ -107,8 +107,9 @@ class ProductController extends Controller
     {
         $field = $request->input('field');
         $value = $request->input('value');
+        $id = $request->input('id'); // Optional ID for edit mode
 
-        if (!$this->productService->checkDuplicate($field, $value)) {
+        if (!$this->productService->checkDuplicate($field, $value, $id)) {
             return $this->successResponse(['is_duplicate' => false]);
         }
 

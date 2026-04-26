@@ -20,6 +20,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 			$query = $this->scopeFilter($query, $filters, $this->model);
 		}
 
+		$query->orderBy('created_at', 'desc');
+
 		return $query->paginate($perPage);
 	}
 
@@ -28,8 +30,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 		return count($this->all());
 	}
 
-	public function checkDuplicate($field, $value)
+	public function checkDuplicate($field, $value, $id = null)
 	{
-		return $this->model->where($field, $value)->exists();
+		$query = $this->model->where($field, $value);
+
+		if ($id) {
+			$query->where('id', '!=', $id);
+		}
+
+		return $query->exists();
 	}
 }

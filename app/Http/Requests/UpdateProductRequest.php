@@ -18,14 +18,16 @@ class UpdateProductRequest extends FormRequest
         return [
             'product_name' => 'sometimes|required|string|max:255|unique:products,product_name,' . $productId,
             'product_code' => 'sometimes|required|string|max:50|unique:products,product_code,' . $productId,
-            'sku' => 'sometimes|required|string|max:50|unique:products,sku,' . $productId . '|regex:/^[A-Z0-9\-]+$/',
-            'category_id' => 'sometimes|required|exists:product_categories,id',
+            'sku' => 'sometimes|required|string|max:50|unique:products,sku,' . $productId,
+            'category_id' => 'sometimes|required|exists:categories,id',
             'unit_id' => 'sometimes|required|exists:units,id',
+            'minimum_inventory' => 'sometimes|required|numeric|min:1',
+            'total_quantity' => 'sometimes|nullable|numeric',
             'description' => 'nullable|string|max:1000',
             'price' => 'sometimes|required|numeric|min:0',
             'cost' => 'sometimes|required|numeric|min:0',
             'minimum_inventory' => 'sometimes|required|numeric|min:0',
-            'product_image_url' => 'nullable|url',
+            'product_image_url' => 'nullable|string|max:255',
             'is_active' => 'boolean',
         ];
     }
@@ -36,7 +38,6 @@ class UpdateProductRequest extends FormRequest
             'product_name.unique' => 'Product name already exists',
             'product_code.unique' => 'Product code already exists',
             'sku.unique' => 'SKU already in use',
-            'sku.regex' => 'SKU must be uppercase with numbers and hyphens only',
             'category_id.exists' => 'Selected category does not exist',
             'unit_id.exists' => 'Selected unit does not exist',
         ];
