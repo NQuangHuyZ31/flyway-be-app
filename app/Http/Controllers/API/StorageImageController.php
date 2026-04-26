@@ -16,7 +16,7 @@ class StorageImageController extends Controller
     // get presigned url for upload image to s3
     public function getPresignedUrl(ImageValidateRequest $request)
     {
-        $presignedURL = $this->storageImageService->getPresignedUrl($request->file('product_image_url'), $request->input('folder'));
+        $presignedURL = $this->storageImageService->getPresignedUrl($request->file('file'), $request->input('folder'));
 
         return $this->successResponse($presignedURL, 'Get presigned URL successfully');
     }

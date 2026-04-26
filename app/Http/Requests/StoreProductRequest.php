@@ -14,17 +14,17 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_name' => 'required|string|max:255|',
+            'product_name' => 'required|string|max:255',
             'product_code' => 'required|string|max:50|unique:products,product_code',
             'sku' => 'required|string|max:50|unique:products,sku|regex:/^[A-Z0-9\-]+$/',
             'category_id' => 'required|exists:categories,id',
-            'unit_id' => 'required|exists:units_of_measures,id',
+            'unit_id' => 'required|exists:units,id',
             'description' => 'nullable|string|max:1000',
             'price' => 'required|numeric|min:0',
             'cost' => 'required|numeric|min:0',
             'minimum_inventory' => 'required|numeric|min:1',
-            'total_quantity' => 'required|numeric|min:1',
-            'product_image_url' => 'nullable|url',
+            'total_quantity' => 'required|numeric',
+            'product_image_url' => 'nullable|string|max:255',
             'is_active' => 'nullable|boolean',
         ];
     }
@@ -49,6 +49,8 @@ class StoreProductRequest extends FormRequest
             'cost.numeric' => 'Chi phí phải là một số',
             'total_quantity.required' => 'Số lượng tổng là bắt buộc',
             'total_quantity.numeric' => 'Số lượng tổng phải là một số',
+            'product_image_url.string' => 'URL hình ảnh sản phẩm phải là một chuỗi',
+            'product_image_url.max' => 'URL hình ảnh sản phẩm không được vượt quá 255 ký tự',
         ];
     }
 }

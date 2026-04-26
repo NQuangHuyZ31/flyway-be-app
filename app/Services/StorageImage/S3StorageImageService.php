@@ -9,6 +9,11 @@ class S3StorageImageService implements StorageImageServiceInterface {
 
 	public function getPresignedUrl($file, $folder)
 	{
+		// Validate file exists
+		if (!$file) {
+			throw new \Exception('File is required');
+		}
+
 		$s3Client = new S3Client([
 			'region' => config('filesystems.disks.s3.region'),
 			'version' => 'latest',

@@ -43,7 +43,7 @@ class ProductService {
 	}
 
 	// Check duplicate product code, sku
-	public function checkDuplicate($field, $value) {
-		return $this->productRepository->checkDuplicate($field, $value);
+	public function checkDuplicate($field, $value, $id = null) {
+		return $this->productRepository->checkDuplicate($field, $value, $id);
 	}
 }
